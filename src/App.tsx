@@ -10,19 +10,32 @@ const ContactModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      const res = await fetch('https://formspree.io/f/mvzvrkey', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.number,
+          message: formData.message,
+        }),
+      });
+      if (!res.ok) throw new Error('Submission failed');
       setIsSuccess(true);
       setTimeout(() => {
         setIsSuccess(false);
         onClose();
         setFormData({ name: '', email: '', number: '', message: '' });
       }, 2000);
-    }, 1500);
+    } catch {
+      alert('Something went wrong. Please try again or email us at hello@happiai.co.uk');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
