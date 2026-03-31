@@ -45,10 +45,16 @@ const WordRotator = () => {
   );
 };
 
+const COUNT_DURATION = 1400; // ms — fixed duration regardless of end value
+
+// easeOutExpo: fast start, decelerates to final value — feels snappy on mobile
+const easeOutExpo = (t: number) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t));
+
 // ── Animated count stat ─────────────────────────────────────────────────────
 function StatItem({ endValue, suffix, label, color }: { endValue: number; suffix: string; label: string; color: string }) {
   const [count, setCount] = useState(0);
   const hasAnimated = useRef(false);
+  const rafRef = useRef<number>(0);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -56,23 +62,28 @@ function StatItem({ endValue, suffix, label, color }: { endValue: number; suffix
       ([entry]) => {
         if (entry.isIntersecting && !hasAnimated.current) {
           hasAnimated.current = true;
-          let current = 0;
-          const increment = endValue / 60;
-          const timer = setInterval(() => {
-            current += increment;
-            if (current >= endValue) {
-              setCount(endValue);
-              clearInterval(timer);
+          const startTime = performance.now();
+
+          const animate = (now: number) => {
+            const progress = Math.min((now - startTime) / COUNT_DURATION, 1);
+            setCount(Math.floor(easeOutExpo(progress) * endValue));
+            if (progress < 1) {
+              rafRef.current = requestAnimationFrame(animate);
             } else {
-              setCount(Math.floor(current));
+              setCount(endValue);
             }
-          }, 33);
+          };
+
+          rafRef.current = requestAnimationFrame(animate);
         }
       },
-      { threshold: 0.3 }
+      { threshold: 0 }
     );
     if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      cancelAnimationFrame(rafRef.current);
+    };
   }, [endValue]);
 
   return (
@@ -94,7 +105,7 @@ function StaticItem({ value, label, color }: { value: string; label: string; col
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) setVisible(true); },
-      { threshold: 0.3 }
+      { threshold: 0 }
     );
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
