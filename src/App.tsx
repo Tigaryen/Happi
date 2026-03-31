@@ -1,8 +1,11 @@
 import { useEffect, useState, FormEvent } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronDown, ArrowRight, Menu, X, Plus, Minus, Send, Phone, Mail, User } from 'lucide-react';
+import { ArrowRight, Menu, X, Plus, Minus, Send, Phone, Mail, User, Calendar } from 'lucide-react';
 import StatsBanner from './StatsBanner';
+const BOOKING_URL = 'https://calendar.app.google/sNTqcw8YxxQzuHxw6';
+
 const ContactModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+  const [tab, setTab] = useState<'message' | 'book'>('book');
   const [formData, setFormData] = useState({ name: '', email: '', number: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -50,7 +53,7 @@ const ContactModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
 
             <div className="p-8 md:p-12">
               {isSuccess ? (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   className="text-center py-12"
@@ -63,69 +66,122 @@ const ContactModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                 </motion.div>
               ) : (
                 <>
-                  <div className="mb-8">
-                    <h3 className="text-3xl font-black text-happi-accent mb-2 tracking-tight">Book your free call</h3>
-                    <p className="text-happi-muted">Fill in your details and we'll be in touch shortly.</p>
+                  <div className="mb-6">
+                    <h3 className="text-3xl font-black text-happi-accent mb-2 tracking-tight">Get in touch</h3>
+                    <p className="text-happi-muted">Book a slot directly or send us a message.</p>
                   </div>
 
-                  <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="relative">
-                      <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-happi-muted" />
-                      <input
-                        required
-                        type="text"
-                        placeholder="Full Name"
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full bg-happi-bg border border-happi-border rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-happi-primary transition-all font-medium"
-                      />
-                    </div>
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div className="relative">
-                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-happi-muted" />
-                        <input
-                          required
-                          type="email"
-                          placeholder="Email Address"
-                          value={formData.email}
-                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                          className="w-full bg-happi-bg border border-happi-border rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-happi-primary transition-all font-medium"
-                        />
-                      </div>
-                      <div className="relative">
-                        <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-happi-muted" />
-                        <input
-                          required
-                          type="tel"
-                          placeholder="Phone Number"
-                          value={formData.number}
-                          onChange={(e) => setFormData({ ...formData, number: e.target.value })}
-                          className="w-full bg-happi-bg border border-happi-border rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-happi-primary transition-all font-medium"
-                        />
-                      </div>
-                    </div>
-                    <div className="relative">
-                      <textarea
-                        required
-                        rows={4}
-                        placeholder="How can we help?"
-                        value={formData.message}
-                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                        className="w-full bg-happi-bg border border-happi-border rounded-2xl py-4 px-4 focus:outline-none focus:ring-2 focus:ring-happi-primary transition-all font-medium resize-none"
-                      />
-                    </div>
+                  {/* Tab switcher */}
+                  <div className="flex gap-2 bg-happi-bg border border-happi-border rounded-2xl p-1 mb-6">
                     <button
-                      disabled={isSubmitting}
-                      type="submit"
-                      className="w-full bg-gradient-to-r from-happi-accent to-happi-muted text-white py-5 rounded-2xl font-bold text-lg hover:shadow-xl hover:shadow-happi-accent/20 transition-all flex items-center justify-center gap-2 disabled:opacity-70"
+                      type="button"
+                      onClick={() => setTab('book')}
+                      className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold transition-all ${tab === 'book' ? 'bg-happi-accent text-white shadow' : 'text-happi-muted hover:text-happi-accent'}`}
                     >
-                      {isSubmitting ? 'Sending...' : (
-                        <>
-                          Send Message <ArrowRight className="w-5 h-5" />
-                        </>
-                      )}
+                      <Calendar className="w-4 h-4" /> Book a meeting
                     </button>
-                  </form>
+                    <button
+                      type="button"
+                      onClick={() => setTab('message')}
+                      className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold transition-all ${tab === 'message' ? 'bg-happi-accent text-white shadow' : 'text-happi-muted hover:text-happi-accent'}`}
+                    >
+                      <Send className="w-4 h-4" /> Send a message
+                    </button>
+                  </div>
+
+                  <AnimatePresence mode="wait">
+                    {tab === 'book' ? (
+                      <motion.div
+                        key="book"
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -8 }}
+                        transition={{ duration: 0.2 }}
+                        className="text-center py-6"
+                      >
+                        <div className="w-20 h-20 bg-happi-primary/20 text-happi-primary rounded-full flex items-center justify-center mx-auto mb-6">
+                          <Calendar className="w-10 h-10" />
+                        </div>
+                        <h4 className="text-xl font-bold text-happi-accent mb-2">Free 30-minute discovery call</h4>
+                        <p className="text-happi-muted text-sm mb-8 max-w-xs mx-auto">
+                          Pick a time that works for you. No pitch, no pressure — just honest advice.
+                        </p>
+                        <a
+                          href={BOOKING_URL}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 bg-happi-accent text-white px-10 py-4 rounded-2xl font-bold text-lg hover:shadow-xl hover:shadow-happi-accent/20 hover:scale-105 transition-all"
+                        >
+                          Choose a time <ArrowRight className="w-5 h-5" />
+                        </a>
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        key="message"
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -8 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <form onSubmit={handleSubmit} className="space-y-4">
+                          <div className="relative">
+                            <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-happi-muted" />
+                            <input
+                              required
+                              type="text"
+                              placeholder="Full Name"
+                              value={formData.name}
+                              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                              className="w-full bg-happi-bg border border-happi-border rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-happi-primary transition-all font-medium"
+                            />
+                          </div>
+                          <div className="grid md:grid-cols-2 gap-4">
+                            <div className="relative">
+                              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-happi-muted" />
+                              <input
+                                required
+                                type="email"
+                                placeholder="Email Address"
+                                value={formData.email}
+                                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                className="w-full bg-happi-bg border border-happi-border rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-happi-primary transition-all font-medium"
+                              />
+                            </div>
+                            <div className="relative">
+                              <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-happi-muted" />
+                              <input
+                                required
+                                type="tel"
+                                placeholder="Phone Number"
+                                value={formData.number}
+                                onChange={(e) => setFormData({ ...formData, number: e.target.value })}
+                                className="w-full bg-happi-bg border border-happi-border rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-happi-primary transition-all font-medium"
+                              />
+                            </div>
+                          </div>
+                          <div className="relative">
+                            <textarea
+                              required
+                              rows={4}
+                              placeholder="How can we help?"
+                              value={formData.message}
+                              onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                              className="w-full bg-happi-bg border border-happi-border rounded-2xl py-4 px-4 focus:outline-none focus:ring-2 focus:ring-happi-primary transition-all font-medium resize-none"
+                            />
+                          </div>
+                          <button
+                            disabled={isSubmitting}
+                            type="submit"
+                            className="w-full bg-gradient-to-r from-happi-accent to-happi-muted text-white py-5 rounded-2xl font-bold text-lg hover:shadow-xl hover:shadow-happi-accent/20 transition-all flex items-center justify-center gap-2 disabled:opacity-70"
+                          >
+                            {isSubmitting ? 'Sending...' : (
+                              <>Send Message <ArrowRight className="w-5 h-5" /></>
+                            )}
+                          </button>
+                        </form>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </>
               )}
             </div>
