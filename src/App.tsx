@@ -1,42 +1,13 @@
-import { useEffect, useState, FormEvent } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight, Menu, X, Plus, Minus, Send, Phone, Mail, User, Calendar } from 'lucide-react';
+import { useForm, ValidationError } from '@formspree/react';
 import StatsBanner from './StatsBanner';
 const BOOKING_URL = 'https://calendar.app.google/sNTqcw8YxxQzuHxw6';
 
 const ContactModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
   const [tab, setTab] = useState<'message' | 'book'>('book');
-  const [formData, setFormData] = useState({ name: '', email: '', number: '', message: '' });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    try {
-      const res = await fetch('https://formspree.io/f/mvzvrkey', {
-        method: 'POST',
-        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          phone: formData.number,
-          message: formData.message,
-        }),
-      });
-      if (!res.ok) throw new Error('Submission failed');
-      setIsSuccess(true);
-      setTimeout(() => {
-        setIsSuccess(false);
-        onClose();
-        setFormData({ name: '', email: '', number: '', message: '' });
-      }, 2000);
-    } catch {
-      alert('Something went wrong. Please try again or email us at hello@happiai.co.uk');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  const [state, handleSubmit] = useForm('mvzvrkey');
 
   return (
     <AnimatePresence>
@@ -65,7 +36,7 @@ const ContactModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
             </button>
 
             <div className="p-8 md:p-12">
-              {isSuccess ? (
+              {state.succeeded ? (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -142,11 +113,11 @@ const ContactModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                             <input
                               required
                               type="text"
+                              name="name"
                               placeholder="Full Name"
-                              value={formData.name}
-                              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                               className="w-full bg-happi-bg border border-happi-border rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-happi-primary transition-all font-medium"
                             />
+                            <ValidationError field="name" errors={state.errors} className="text-red-500 text-xs mt-1 pl-2" />
                           </div>
                           <div className="grid md:grid-cols-2 gap-4">
                             <div className="relative">
@@ -154,20 +125,19 @@ const ContactModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                               <input
                                 required
                                 type="email"
+                                name="email"
                                 placeholder="Email Address"
-                                value={formData.email}
-                                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                 className="w-full bg-happi-bg border border-happi-border rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-happi-primary transition-all font-medium"
                               />
+                              <ValidationError field="email" errors={state.errors} className="text-red-500 text-xs mt-1 pl-2" />
                             </div>
                             <div className="relative">
                               <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-happi-muted" />
                               <input
                                 required
                                 type="tel"
+                                name="phone"
                                 placeholder="Phone Number"
-                                value={formData.number}
-                                onChange={(e) => setFormData({ ...formData, number: e.target.value })}
                                 className="w-full bg-happi-bg border border-happi-border rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-happi-primary transition-all font-medium"
                               />
                             </div>
@@ -176,18 +146,18 @@ const ContactModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                             <textarea
                               required
                               rows={4}
+                              name="message"
                               placeholder="How can we help?"
-                              value={formData.message}
-                              onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                               className="w-full bg-happi-bg border border-happi-border rounded-2xl py-4 px-4 focus:outline-none focus:ring-2 focus:ring-happi-primary transition-all font-medium resize-none"
                             />
+                            <ValidationError field="message" errors={state.errors} className="text-red-500 text-xs mt-1 pl-2" />
                           </div>
                           <button
-                            disabled={isSubmitting}
+                            disabled={state.submitting}
                             type="submit"
                             className="w-full bg-gradient-to-r from-happi-accent to-happi-muted text-white py-5 rounded-2xl font-bold text-lg hover:shadow-xl hover:shadow-happi-accent/20 transition-all flex items-center justify-center gap-2 disabled:opacity-70"
                           >
-                            {isSubmitting ? 'Sending...' : (
+                            {state.submitting ? 'Sending...' : (
                               <>Send Message <ArrowRight className="w-5 h-5" /></>
                             )}
                           </button>
