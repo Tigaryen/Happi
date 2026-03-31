@@ -128,7 +128,7 @@ export default function StatsBanner() {
 
           {/* Right — stats */}
           <div className="w-full md:w-auto md:flex-1 flex flex-row items-center justify-between md:justify-around gap-2 md:gap-6">
-            <StatItem endValue={60} suffix="+" label="Projects Delivered" color="#f472b6" />
+            <StatItem endValue={60} suffix="+" label="Happy Customers" color="#f472b6" />
             <div className="w-px h-10 bg-happi-border shrink-0" />
             <StatItem endValue={100} suffix="x" label="Faster Workflows" color="#67e8f9" />
             <div className="w-px h-10 bg-happi-border shrink-0" />
