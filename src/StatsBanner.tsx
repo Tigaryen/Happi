@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 // ── Word Rotator ────────────────────────────────────────────────────────────
 const WordRotator = () => {
@@ -52,10 +52,10 @@ const easeOutExpo = (t: number) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t));
 
 // ── Animated count stat ─────────────────────────────────────────────────────
 function StatItem({ endValue, suffix, label, color }: { endValue: number; suffix: string; label: string; color: string }) {
-  const [count, setCount] = useState(0);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const spanRef = useRef<HTMLSpanElement>(null);
   const hasAnimated = useRef(false);
   const rafRef = useRef<number>(0);
-  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -66,53 +66,65 @@ function StatItem({ endValue, suffix, label, color }: { endValue: number; suffix
 
           const animate = (now: number) => {
             const progress = Math.min((now - startTime) / COUNT_DURATION, 1);
-            setCount(Math.floor(easeOutExpo(progress) * endValue));
+            const value = Math.floor(easeOutExpo(progress) * endValue);
+            // Write directly to DOM — no React re-render
+            if (spanRef.current) spanRef.current.textContent = `${value}${suffix}`;
             if (progress < 1) {
               rafRef.current = requestAnimationFrame(animate);
             } else {
-              setCount(endValue);
+              if (spanRef.current) spanRef.current.textContent = `${endValue}${suffix}`;
             }
           };
 
           rafRef.current = requestAnimationFrame(animate);
         }
       },
-      { threshold: 0 }
+      { threshold: 0, rootMargin: '0px 0px 100px 0px' }
     );
-    if (ref.current) observer.observe(ref.current);
+    if (wrapperRef.current) observer.observe(wrapperRef.current);
     return () => {
       observer.disconnect();
       cancelAnimationFrame(rafRef.current);
     };
-  }, [endValue]);
+  }, [endValue, suffix]);
 
   return (
-    <div ref={ref} className="flex flex-col items-center gap-1.5">
+    <div ref={wrapperRef} className="flex flex-col items-center gap-1.5">
       <div className="relative pr-3">
         <div className="absolute -top-1.5 -right-0.5 w-4 h-4 rounded-full opacity-80" style={{ backgroundColor: color }} />
-        <span className="text-4xl md:text-6xl font-bold text-happi-accent">{count}{suffix}</span>
+        <span ref={spanRef} className="text-4xl md:text-6xl font-bold text-happi-accent">0{suffix}</span>
       </div>
       <span className="text-xs md:text-sm font-medium tracking-wide uppercase text-happi-muted text-center">{label}</span>
     </div>
   );
 }
 
-// ── Static stat (no count-up) ───────────────────────────────────────────────
+// ── Static stat — CSS-driven fade in, no JS state ───────────────────────────
 function StaticItem({ value, label, color }: { value: string; label: string; color: string }) {
-  const [visible, setVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
     const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
-      { threshold: 0 }
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.style.opacity = '1';
+          observer.disconnect();
+        }
+      },
+      { threshold: 0, rootMargin: '0px 0px 100px 0px' }
     );
-    if (ref.current) observer.observe(ref.current);
+    observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
   return (
-    <div ref={ref} className={`flex flex-col items-center gap-1.5 transition-opacity duration-1000 ${visible ? 'opacity-100' : 'opacity-0'}`}>
+    <div
+      ref={ref}
+      className="flex flex-col items-center gap-1.5"
+      style={{ opacity: 0, transition: 'opacity 0.6s ease' }}
+    >
       <div className="relative pr-3">
         <div className="absolute -top-1.5 -right-0.5 w-4 h-4 rounded-full opacity-80" style={{ backgroundColor: color }} />
         <span className="text-4xl md:text-6xl font-bold text-happi-accent">{value}</span>
