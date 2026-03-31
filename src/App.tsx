@@ -277,15 +277,24 @@ export default function App() {
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
+
+    // Throttle mousemove to one update per animation frame — prevents
+    // firing hundreds of re-renders per second while the cursor moves
+    let rafId: number;
     const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        setMousePos({ x: e.clientX, y: e.clientY });
+      });
     };
-    window.addEventListener('scroll', handleScroll);
-    window.addEventListener('mousemove', handleMouseMove);
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('mousemove', handleMouseMove);
+      cancelAnimationFrame(rafId);
     };
   }, []);
 
@@ -498,7 +507,7 @@ export default function App() {
                 <div className="text-happi-primary text-6xl font-serif mb-6">“</div>
                 <h4 className="text-2xl font-bold mb-8 leading-tight">{t.quote}</h4>
                 <div className="flex items-center">
-                  <img src={t.img} alt={t.author} className="w-12 h-12 rounded-full mr-4 grayscale" referrerPolicy="no-referrer" />
+                  <img src={t.img} alt={t.author} className="w-12 h-12 rounded-full mr-4 grayscale" referrerPolicy="no-referrer" loading="lazy" width="48" height="48" />
                   <div>
                     <div className="font-bold">{t.author}</div>
                     <div className="text-sm text-happi-muted">{t.role}</div>
