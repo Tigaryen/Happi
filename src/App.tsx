@@ -267,51 +267,6 @@ const GrainyGradient = ({ mousePos }: { mousePos: { x: number, y: number } }) =>
   );
 };
 
-const WordRotator = () => {
-  const [index, setIndex] = useState(0);
-  const words = ["Customers", "Employees", "Businesses"];
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIndex((prev) => (prev + 1) % words.length);
-    }, 4100);
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <div 
-      className="flex flex-col items-center text-center overflow-visible text-5xl md:text-7xl font-black tracking-tighter" 
-      style={{ minHeight: '2.5em' }}
-    >
-      <span className="text-happi-accent leading-none">
-        Happier
-      </span>
-      <div 
-        className="relative overflow-hidden w-full" 
-        style={{ height: '1.3em', marginTop: '12px' }}
-      >
-        {words.map((word, i) => {
-          const isActive = i === index;
-          const isPast = i === (index - 1 + words.length) % words.length;
-          return (
-            <span
-              key={word}
-              className="absolute left-0 right-0 text-happi-primary whitespace-nowrap"
-              style={{
-                transform: isActive ? 'translateY(0)' : isPast ? 'translateY(-100%)' : 'translateY(100%)',
-                opacity: isActive ? 1 : 0,
-                transition: 'transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1)',
-                visibility: (isActive || isPast) ? 'visible' : 'hidden'
-              }}
-            >
-              {word}
-            </span>
-          );
-        })}
-      </div>
-    </div>
-  );
-};
 
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -433,14 +388,8 @@ export default function App() {
         </div>
       </section>
 
-      {/* Word Rotator Section */}
-      <section className="py-[60px] bg-white overflow-visible">
-        <div className="max-w-7xl mx-auto px-6">
-          <motion.div {...revealProps}>
-            <WordRotator />
-          </motion.div>
-        </div>
-      </section>
+      {/* Stats + Word Rotator Banner */}
+      <StatsBanner />
 
       {/* Services Section */}
       <section id="services" className="py-32 px-6">
@@ -497,7 +446,6 @@ export default function App() {
           </div>
         </div>
       </section>
-      <StatsBanner />
 
       {/* Hook Section */}
       <section className="py-20 px-6">

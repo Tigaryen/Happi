@@ -1,5 +1,51 @@
 import { useEffect, useRef, useState } from 'react';
 
+// ── Word Rotator ────────────────────────────────────────────────────────────
+const WordRotator = () => {
+  const [index, setIndex] = useState(0);
+  const words = ["Customers", "Employees", "Businesses"];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % words.length);
+    }, 4100);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div
+      className="flex flex-col items-start text-left overflow-visible text-5xl md:text-7xl font-black tracking-tighter"
+      style={{ minHeight: '2.5em' }}
+    >
+      <span className="text-happi-accent leading-none">Happier</span>
+      <div
+        className="relative overflow-hidden w-full"
+        style={{ height: '1.3em', marginTop: '12px' }}
+      >
+        {words.map((word, i) => {
+          const isActive = i === index;
+          const isPast = i === (index - 1 + words.length) % words.length;
+          return (
+            <span
+              key={word}
+              className="absolute left-0 right-0 text-happi-primary whitespace-nowrap"
+              style={{
+                transform: isActive ? 'translateY(0)' : isPast ? 'translateY(-100%)' : 'translateY(100%)',
+                opacity: isActive ? 1 : 0,
+                transition: 'transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1)',
+                visibility: (isActive || isPast) ? 'visible' : 'hidden',
+              }}
+            >
+              {word}
+            </span>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+// ── Animated count stat ─────────────────────────────────────────────────────
 function StatItem({ endValue, suffix, label, color }: { endValue: number; suffix: string; label: string; color: string }) {
   const [count, setCount] = useState(0);
   const hasAnimated = useRef(false);
@@ -30,20 +76,17 @@ function StatItem({ endValue, suffix, label, color }: { endValue: number; suffix
   }, [endValue]);
 
   return (
-    <div ref={ref} className="flex flex-col items-center gap-2 px-8 py-6">
+    <div ref={ref} className="flex flex-col items-center gap-2">
       <div className="relative">
         <div className="absolute -top-2 -right-3 w-5 h-5 rounded-full opacity-80" style={{ backgroundColor: color }} />
-        <span className="text-5xl md:text-6xl font-bold" style={{ color: '#020617' }}>
-          {count}{suffix}
-        </span>
+        <span className="text-5xl md:text-6xl font-bold text-happi-accent">{count}{suffix}</span>
       </div>
-      <span className="text-sm md:text-base font-medium tracking-wide uppercase" style={{ color: '#1e293b' }}>
-        {label}
-      </span>
+      <span className="text-sm font-medium tracking-wide uppercase text-happi-muted">{label}</span>
     </div>
   );
 }
 
+// ── Static stat (no count-up) ───────────────────────────────────────────────
 function StaticItem({ value, label, color }: { value: string; label: string; color: string }) {
   const [visible, setVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -58,26 +101,40 @@ function StaticItem({ value, label, color }: { value: string; label: string; col
   }, []);
 
   return (
-    <div ref={ref} className={`flex flex-col items-center gap-2 px-8 py-6 transition-opacity duration-1000 ${visible ? 'opacity-100' : 'opacity-0'}`}>
+    <div ref={ref} className={`flex flex-col items-center gap-2 transition-opacity duration-1000 ${visible ? 'opacity-100' : 'opacity-0'}`}>
       <div className="relative">
         <div className="absolute -top-2 -right-3 w-5 h-5 rounded-full opacity-80" style={{ backgroundColor: color }} />
-        <span className="text-5xl md:text-6xl font-bold" style={{ color: '#020617' }}>{value}</span>
+        <span className="text-5xl md:text-6xl font-bold text-happi-accent">{value}</span>
       </div>
-      <span className="text-sm md:text-base font-medium tracking-wide uppercase" style={{ color: '#1e293b' }}>{label}</span>
+      <span className="text-sm font-medium tracking-wide uppercase text-happi-muted">{label}</span>
     </div>
   );
 }
 
+// ── Combined banner ─────────────────────────────────────────────────────────
 export default function StatsBanner() {
   return (
-    <section className="w-full py-16 md:py-20" style={{ background: 'linear-gradient(to right, #f0fdf4, #dcfce7)' }}>
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="flex flex-col md:flex-row items-center justify-center md:justify-around gap-8 md:gap-4">
-          <StatItem endValue={60} suffix="+" label="Projects Delivered" color="#f472b6" />
-          <div className="hidden md:block w-px h-16 bg-gray-300" />
-          <StatItem endValue={100} suffix="x" label="Faster Workflows" color="#67e8f9" />
-          <div className="hidden md:block w-px h-16 bg-gray-300" />
-          <StaticItem value="24/7" label="Availability" color="#fde047" />
+    <section className="w-full py-16 md:py-24 bg-white overflow-visible">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-12 md:gap-16">
+
+          {/* Left — animated text */}
+          <div className="w-full md:w-auto md:flex-1">
+            <WordRotator />
+          </div>
+
+          {/* Divider */}
+          <div className="hidden md:block w-px self-stretch bg-happi-border" />
+
+          {/* Right — stats */}
+          <div className="w-full md:w-auto md:flex-1 flex flex-row items-center justify-around gap-6">
+            <StatItem endValue={60} suffix="+" label="Projects Delivered" color="#f472b6" />
+            <div className="w-px h-12 bg-happi-border" />
+            <StatItem endValue={100} suffix="x" label="Faster Workflows" color="#67e8f9" />
+            <div className="w-px h-12 bg-happi-border" />
+            <StaticItem value="24/7" label="Availability" color="#fde047" />
+          </div>
+
         </div>
       </div>
     </section>
