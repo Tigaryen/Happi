@@ -58,6 +58,12 @@ function StatItem({ endValue, suffix, label, color }: { endValue: number; suffix
   const rafRef = useRef<number>(0);
 
   useEffect(() => {
+    // Show final value immediately on mount for mobile
+    if (window.innerWidth < 768) {
+      if (spanRef.current) spanRef.current.textContent = `${endValue}${suffix}`;
+      return;
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && !hasAnimated.current) {
@@ -67,7 +73,6 @@ function StatItem({ endValue, suffix, label, color }: { endValue: number; suffix
           const animate = (now: number) => {
             const progress = Math.min((now - startTime) / COUNT_DURATION, 1);
             const value = Math.floor(easeOutExpo(progress) * endValue);
-            // Write directly to DOM — no React re-render
             if (spanRef.current) spanRef.current.textContent = `${value}${suffix}`;
             if (progress < 1) {
               rafRef.current = requestAnimationFrame(animate);
@@ -92,7 +97,7 @@ function StatItem({ endValue, suffix, label, color }: { endValue: number; suffix
     <div ref={wrapperRef} className="flex flex-col items-center gap-1.5">
       <div className="relative pr-3">
         <div className="absolute -top-1.5 -right-0.5 w-4 h-4 rounded-full opacity-80" style={{ backgroundColor: color }} />
-        <span ref={spanRef} className="text-4xl md:text-6xl font-bold text-happi-accent">0{suffix}</span>
+        <span ref={spanRef} className="text-4xl md:text-6xl font-bold text-happi-accent">{endValue}{suffix}</span>
       </div>
       <span className="text-xs md:text-sm font-medium tracking-wide uppercase text-happi-muted text-center">{label}</span>
     </div>
