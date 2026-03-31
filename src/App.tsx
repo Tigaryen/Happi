@@ -1,7 +1,7 @@
 import { useEffect, useState, FormEvent } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronDown, ArrowRight, Menu, X, Plus, Minus, Send, Phone, Mail, User } from 'lucide-react';
-
+import StatsBanner from './StatsBanner';
 const ContactModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
   const [formData, setFormData] = useState({ name: '', email: '', number: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -458,6 +458,7 @@ export default function App() {
           </div>
         </div>
       </section>
+      <StatsBanner />
 
       {/* Hook Section */}
       <section className="py-20 px-6">
