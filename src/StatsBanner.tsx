@@ -76,12 +76,12 @@ function StatItem({ endValue, suffix, label, color }: { endValue: number; suffix
   }, [endValue]);
 
   return (
-    <div ref={ref} className="flex flex-col items-center gap-2">
-      <div className="relative">
-        <div className="absolute -top-2 -right-3 w-5 h-5 rounded-full opacity-80" style={{ backgroundColor: color }} />
-        <span className="text-5xl md:text-6xl font-bold text-happi-accent">{count}{suffix}</span>
+    <div ref={ref} className="flex flex-col items-center gap-1.5">
+      <div className="relative pr-3">
+        <div className="absolute -top-1.5 -right-0.5 w-4 h-4 rounded-full opacity-80" style={{ backgroundColor: color }} />
+        <span className="text-4xl md:text-6xl font-bold text-happi-accent">{count}{suffix}</span>
       </div>
-      <span className="text-sm font-medium tracking-wide uppercase text-happi-muted">{label}</span>
+      <span className="text-xs md:text-sm font-medium tracking-wide uppercase text-happi-muted text-center">{label}</span>
     </div>
   );
 }
@@ -101,12 +101,12 @@ function StaticItem({ value, label, color }: { value: string; label: string; col
   }, []);
 
   return (
-    <div ref={ref} className={`flex flex-col items-center gap-2 transition-opacity duration-1000 ${visible ? 'opacity-100' : 'opacity-0'}`}>
-      <div className="relative">
-        <div className="absolute -top-2 -right-3 w-5 h-5 rounded-full opacity-80" style={{ backgroundColor: color }} />
-        <span className="text-5xl md:text-6xl font-bold text-happi-accent">{value}</span>
+    <div ref={ref} className={`flex flex-col items-center gap-1.5 transition-opacity duration-1000 ${visible ? 'opacity-100' : 'opacity-0'}`}>
+      <div className="relative pr-3">
+        <div className="absolute -top-1.5 -right-0.5 w-4 h-4 rounded-full opacity-80" style={{ backgroundColor: color }} />
+        <span className="text-4xl md:text-6xl font-bold text-happi-accent">{value}</span>
       </div>
-      <span className="text-sm font-medium tracking-wide uppercase text-happi-muted">{label}</span>
+      <span className="text-xs md:text-sm font-medium tracking-wide uppercase text-happi-muted text-center">{label}</span>
     </div>
   );
 }
@@ -127,11 +127,11 @@ export default function StatsBanner() {
           <div className="hidden md:block w-px self-stretch bg-happi-border" />
 
           {/* Right — stats */}
-          <div className="w-full md:w-auto md:flex-1 flex flex-row items-center justify-around gap-6">
+          <div className="w-full md:w-auto md:flex-1 flex flex-row items-center justify-between md:justify-around gap-2 md:gap-6">
             <StatItem endValue={60} suffix="+" label="Projects Delivered" color="#f472b6" />
-            <div className="w-px h-12 bg-happi-border" />
+            <div className="w-px h-10 bg-happi-border shrink-0" />
             <StatItem endValue={100} suffix="x" label="Faster Workflows" color="#67e8f9" />
-            <div className="w-px h-12 bg-happi-border" />
+            <div className="w-px h-10 bg-happi-border shrink-0" />
             <StaticItem value="24/7" label="Availability" color="#fde047" />
           </div>
 
