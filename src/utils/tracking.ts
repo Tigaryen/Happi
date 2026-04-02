@@ -1,5 +1,5 @@
-export const trackLead = () => {
+export const trackSchedule = () => {
   if (typeof window !== 'undefined' && window.fbq) {
-    window.fbq('track', 'Lead');
+    window.fbq('track', 'Schedule');
   }
 };

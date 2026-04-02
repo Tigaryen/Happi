@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight, Menu, X, Plus, Minus, Send, Phone, Mail, User, Calendar } from 'lucide-react';
 import { useForm, ValidationError } from '@formspree/react';
 import StatsBanner from './StatsBanner';
-import { trackLead } from './utils/tracking';
+import { trackSchedule } from './utils/tracking';
 const BOOKING_URL = 'https://calendar.app.google/sNTqcw8YxxQzuHxw6';
 
 const ContactModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
@@ -12,7 +12,7 @@ const ContactModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
 
   useEffect(() => {
     if (state.succeeded) {
-      trackLead();
+      trackSchedule();
     }
   }, [state.succeeded]);
 
@@ -101,7 +101,7 @@ const ContactModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                           href={BOOKING_URL}
                           target="_blank"
                           rel="noopener noreferrer"
-                          onClick={trackLead}
+                          onClick={trackSchedule}
                           className="inline-flex items-center gap-2 bg-happi-accent text-white px-10 py-4 rounded-2xl font-bold text-lg hover:shadow-xl hover:shadow-happi-accent/20 hover:scale-105 transition-all"
                         >
                           Choose a time <ArrowRight className="w-5 h-5" />
@@ -391,7 +391,7 @@ export default function App() {
             </p>
             <div className="flex flex-col sm:flex-row items-center gap-4 mb-8">
               <button
-                onClick={() => { trackLead(); setIsContactModalOpen(true); }}
+                onClick={() => { trackSchedule(); setIsContactModalOpen(true); }}
                 className="w-full sm:w-auto bg-happi-accent text-white px-10 py-4 rounded-full font-bold hover:scale-105 hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] transition-all flex items-center justify-center group"
               >
                 Book a free call
@@ -570,7 +570,7 @@ export default function App() {
               Can't find what you're looking for? <span className="font-bold text-happi-accent">Book a free call</span>
             </p>
             <button
-              onClick={() => { trackLead(); setIsContactModalOpen(true); }}
+              onClick={() => { trackSchedule(); setIsContactModalOpen(true); }}
               className="bg-happi-accent text-white px-10 py-4 rounded-full font-bold hover:shadow-[0_0_25px_rgba(16,185,129,0.4)] transition-all"
             >
               Book a free call
