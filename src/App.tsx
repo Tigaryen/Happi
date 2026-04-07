@@ -457,6 +457,7 @@ export default function App() {
               </p>
               <div className="flex space-x-4">
                 <a href="https://www.facebook.com/profile.php?id=61573483374888" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="w-8 h-8 rounded-full border border-happi-accent flex items-center justify-center hover:bg-happi-accent hover:text-white transition-colors">f</a>
+                <a href="https://www.linkedin.com/company/happi-ai-uk/?viewAsMember=true" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="w-8 h-8 rounded-full border border-happi-accent flex items-center justify-center hover:bg-happi-accent hover:text-white transition-colors text-xs font-bold">in</a>
               </div>
             </div>
 
