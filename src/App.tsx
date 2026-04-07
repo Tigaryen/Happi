@@ -492,40 +492,40 @@ export default function App() {
             <h2 className="text-4xl md:text-6xl font-bold text-happi-accent">What our clients say</h2>
           </motion.div>
 
-          <div className=”grid grid-cols-1 md:grid-cols-3 gap-8”>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
-                quote: “Pipeline is up, time per deal is down. But the bigger win was the rollout. They audited how we were working, trained the whole team and made sure everyone, sales, ops, marketing, was actually getting value from it. We're sharper as a business because of it.”,
-                author: “Priya N.”,
-                role: “Head of Operations”,
-                img: “https://picsum.photos/seed/priya/100/100”
+                quote: "Pipeline is up, time per deal is down. But the bigger win was the rollout. They audited how we were working, trained the whole team and made sure everyone, sales, ops, marketing, was actually getting value from it. We're sharper as a business because of it.",
+                author: "Priya N.",
+                role: "Head of Operations",
+                img: "https://picsum.photos/seed/priya/100/100"
               },
               {
-                quote: “Running a gaming studio like Shakuri means every hour matters. Happi AI has genuinely changed how we operate. Tasks that used to eat into our team's creative time are handled in minutes. We're not cutting people, we're freeing them to do the work only humans can do. It didn't just save us time, it gave us capacity we didn't know we were missing.”,
-                author: “Eve S.”,
-                role: “Creative Director”,
-                img: “https://picsum.photos/seed/eve/100/100”
+                quote: "Running a gaming studio like Shakuri means every hour matters. Happi AI has genuinely changed how we operate. Tasks that used to eat into our team's creative time are handled in minutes. We're not cutting people, we're freeing them to do the work only humans can do. It didn't just save us time, it gave us capacity we didn't know we were missing.",
+                author: "Eve S.",
+                role: "Creative Director",
+                img: "https://picsum.photos/seed/eve/100/100"
               },
               {
-                quote: “Too much volume, not enough hours. Our agents handle first response around the clock now. Bookings get made, opportunities don't fall through the cracks at 9pm on a Friday. Our inbound conversion is up and the team are focused on warm leads instead of playing catch up.”,
-                author: “James T.”,
-                role: “Customer Experience Lead”,
-                img: “https://picsum.photos/seed/jamest/100/100”
+                quote: "Too much volume, not enough hours. Our agents handle first response around the clock now. Bookings get made, opportunities don't fall through the cracks at 9pm on a Friday. Our inbound conversion is up and the team are focused on warm leads instead of playing catch up.",
+                author: "James T.",
+                role: "Customer Experience Lead",
+                img: "https://picsum.photos/seed/jamest/100/100"
               }
             ].map((t, idx) => (
               <motion.div
                 key={idx}
                 {...revealProps}
                 transition={{ ...revealProps.transition, delay: idx * 0.1 }}
-                className=”p-8 border-l-4 border-happi-primary bg-happi-bg rounded-r-3xl flex flex-col”
+                className="p-8 border-l-4 border-happi-primary bg-happi-bg rounded-r-3xl flex flex-col"
               >
-                <div className=”text-happi-primary text-6xl font-serif mb-4 leading-none”>”</div>
-                <p className=”text-base font-medium mb-8 leading-relaxed flex-1”>{t.quote}</p>
-                <div className=”flex items-center”>
-                  <img src={t.img} alt={t.author} className=”w-12 h-12 rounded-full mr-4 grayscale” referrerPolicy=”no-referrer” loading=”lazy” width=”48” height=”48” />
+                <div className="text-happi-primary text-6xl font-serif mb-4 leading-none">&ldquo;</div>
+                <p className="text-base font-medium mb-8 leading-relaxed flex-1">{t.quote}</p>
+                <div className="flex items-center">
+                  <img src={t.img} alt={t.author} className="w-12 h-12 rounded-full mr-4 grayscale" referrerPolicy="no-referrer" loading="lazy" width="48" height="48" />
                   <div>
-                    <div className=”font-bold”>{t.author}</div>
-                    <div className=”text-sm text-happi-muted”>{t.role}</div>
+                    <div className="font-bold">{t.author}</div>
+                    <div className="text-sm text-happi-muted">{t.role}</div>
                   </div>
                 </div>
               </motion.div>
