@@ -40,7 +40,7 @@ export default function AuditBanner() {
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
         >
-          Start your free AI Audit
+          Get Your Free Score
           <span style={{
             fontSize: 20,
             display: "inline-block",
