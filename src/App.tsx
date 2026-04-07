@@ -438,7 +438,7 @@ export default function App() {
               onClick={() => setIsContactModalOpen(true)}
               className="bg-happi-accent text-white px-12 py-5 rounded-full font-bold text-lg hover:scale-105 hover:shadow-[0_0_40px_rgba(16,185,129,0.5)] transition-all"
             >
-              Book your free call
+              Book a Consultation
             </button>
           </motion.div>
           <div className="absolute top-0 left-0 w-64 h-64 bg-white/10 rounded-full -ml-32 -mt-32"></div>
