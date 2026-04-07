@@ -408,7 +408,7 @@ export default function App() {
           <motion.div {...revealProps}>
             <FAQItem 
               question="What kinds of businesses do you work with?" 
-              answer="We work best with small to mid-size businesses who know they need to modernise but aren't sure where to start. Retail, services, hospitality, professional services — we've worked with them all." 
+              answer="We work with businesses looking to modernise and bring AI into how they operate. Real implementation, real outcomes."
             />
             <FAQItem 
               question="How quickly can you get started?" 
