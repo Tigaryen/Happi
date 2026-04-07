@@ -1,51 +1,69 @@
+import { useState } from "react";
+
 export default function AuditBanner() {
+  const [hovered, setHovered] = useState(false);
+
   return (
-    <div style={{ padding: "0 24px", marginBottom: 0 }}>
-      <div style={{
+    <div style={{ padding: "0 24px" }}>
+      <section style={{
         background: "#edf8f1",
         borderRadius: 20,
-        padding: "40px 48px",
+        padding: "clamp(40px, 5vw, 56px) clamp(32px, 5vw, 64px)",
         display: "flex",
-        flexWrap: "wrap",
         alignItems: "center",
         justifyContent: "space-between",
-        gap: 24,
+        gap: 40,
         fontFamily: "'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif",
-        maxWidth: 1344,
+        maxWidth: 1200,
         margin: "0 auto",
+        flexWrap: "wrap" as const,
       }}>
-        <h2 style={{
-          margin: 0,
-          fontSize: "clamp(28px, 4vw, 42px)",
-          fontWeight: 800,
-          lineHeight: 1.1,
-          letterSpacing: "-0.03em",
-          color: "#2dd4a0",
-        }}>
-          Get your AI<br />Readiness Score
-        </h2>
+        <div style={{ flex: 1 }}>
+          <h2 style={{
+            margin: 0,
+            fontSize: "clamp(36px, 5vw, 56px)",
+            fontWeight: 800,
+            color: "#0a1a0f",
+            lineHeight: 1.08,
+            letterSpacing: "-0.03em",
+          }}>
+            Get your AI<br />
+            <span style={{ color: "#2dd4a0" }}>Readiness Score</span>
+          </h2>
+        </div>
 
-        <a
-          href="/audit"
-          style={{
-            display: "inline-block",
-            background: "#0f1f14",
-            color: "#ffffff",
-            padding: "16px 28px",
-            borderRadius: 50,
-            fontFamily: "'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif",
-            fontSize: 15,
-            fontWeight: 700,
-            textDecoration: "none",
-            whiteSpace: "nowrap",
-            transition: "opacity 0.2s ease",
-          }}
-          onMouseOver={e => (e.currentTarget as HTMLAnchorElement).style.opacity = "0.85"}
-          onMouseOut={e => (e.currentTarget as HTMLAnchorElement).style.opacity = "1"}
-        >
-          Start your free AI Audit →
-        </a>
-      </div>
+        <div style={{ flexShrink: 0 }}>
+          <a
+            href="/audit"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 10,
+              background: hovered ? "#1a3020" : "#0f1f14",
+              color: "#ffffff",
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: 18,
+              fontWeight: 700,
+              padding: "20px 40px",
+              borderRadius: 50,
+              textDecoration: "none",
+              whiteSpace: "nowrap" as const,
+              transition: "background 0.2s ease, transform 0.15s ease",
+              transform: hovered ? "translateY(-1px)" : "translateY(0)",
+            }}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+          >
+            Start your free AI Audit
+            <span style={{
+              fontSize: 20,
+              transition: "transform 0.2s ease",
+              transform: hovered ? "translateX(3px)" : "translateX(0)",
+              display: "inline-block",
+            }}>→</span>
+          </a>
+        </div>
+      </section>
     </div>
   );
 }
