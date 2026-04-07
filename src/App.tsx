@@ -5,7 +5,7 @@ import { useForm, ValidationError } from '@formspree/react';
 import StatsBanner from './StatsBanner';
 import AuditBanner from './AuditBanner';
 import { trackSchedule } from './utils/tracking';
-const BOOKING_URL = 'https://calendar.app.google/sNTqcw8YxxQzuHxw6';
+const BOOKING_URL = 'https://calendar.app.google/McmYZfZpSyQV43ug9';
 
 const ContactModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
   const [tab, setTab] = useState<'message' | 'book'>('book');
@@ -331,11 +331,11 @@ export default function App() {
           <div className="hidden md:flex items-center space-x-10">
             <a href="#services" className="text-sm font-medium hover:text-happi-primary transition-colors">Services</a>
             <a href="#results" className="text-sm font-medium hover:text-happi-primary transition-colors">About</a>
-            <button 
-              onClick={() => setIsContactModalOpen(true)}
+            <button
+              onClick={() => window.open(BOOKING_URL, '_blank')}
               className="bg-happi-accent text-white px-8 py-3 rounded-full text-sm font-bold hover:scale-105 hover:shadow-[0_0_20px_rgba(16,185,129,0.4)] transition-all"
             >
-              Contact
+              Get in Touch
             </button>
           </div>
 
@@ -358,14 +358,11 @@ export default function App() {
               <a href="#services" onClick={() => setIsMenuOpen(false)} className="text-2xl font-bold">Services</a>
               <a href="#results" onClick={() => setIsMenuOpen(false)} className="text-2xl font-bold">About Us</a>
               <a href="#contact" onClick={() => setIsMenuOpen(false)} className="text-2xl font-bold">FAQ</a>
-              <button 
-                onClick={() => {
-                  setIsMenuOpen(false);
-                  setIsContactModalOpen(true);
-                }}
+              <button
+                onClick={() => { setIsMenuOpen(false); window.open(BOOKING_URL, '_blank'); }}
                 className="bg-happi-accent text-white w-full py-4 rounded-full font-bold hover:shadow-[0_0_20px_rgba(16,185,129,0.4)] transition-all"
               >
-                Contact
+                Get in Touch
               </button>
             </div>
           </motion.div>
@@ -392,10 +389,10 @@ export default function App() {
             </p>
             <div className="flex flex-col sm:flex-row items-center gap-4 mb-8">
               <button
-                onClick={() => { trackSchedule(); setIsContactModalOpen(true); }}
+                onClick={() => { trackSchedule(); window.open(BOOKING_URL, '_blank'); }}
                 className="w-full sm:w-auto bg-happi-accent text-white px-10 py-4 rounded-full font-bold hover:scale-105 hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] transition-all flex items-center justify-center group"
               >
-                Book a free call
+                Show Me How
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
@@ -478,8 +475,8 @@ export default function App() {
             <p className="text-xl text-happi-muted mb-12 font-medium">
               We help businesses turn wasted time and inefficiency into revenue, growth, and competitive advantage
             </p>
-            <button 
-              onClick={() => setIsContactModalOpen(true)}
+            <button
+              onClick={() => window.open(BOOKING_URL, '_blank')}
               className="bg-happi-accent text-white px-10 py-5 rounded-full text-lg font-bold hover:scale-105 hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] transition-all flex items-center gap-2 mx-auto shadow-lg shadow-happi-accent/20 w-fit"
             >
               See how it works <ArrowRight className="w-5 h-5" />
@@ -495,33 +492,40 @@ export default function App() {
             <h2 className="text-4xl md:text-6xl font-bold text-happi-accent">What our clients say</h2>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-12">
+          <div className=”grid grid-cols-1 md:grid-cols-3 gap-8”>
             {[
               {
-                quote: "Their experience helped us understand AI properly for the first time. We went from confused to confident in a single day.",
-                author: "Sarah M.",
-                role: "Operations Director",
-                img: "https://picsum.photos/seed/sarah/100/100"
+                quote: “Pipeline is up, time per deal is down. But the bigger win was the rollout. They audited how we were working, trained the whole team and made sure everyone, sales, ops, marketing, was actually getting value from it. We're sharper as a business because of it.”,
+                author: “Priya N.”,
+                role: “Head of Operations”,
+                img: “https://picsum.photos/seed/priya/100/100”
               },
               {
-                quote: "The automation they built saves us 3 hours every single day. It paid for itself in the first week.",
-                author: "James T.",
-                role: "Business Owner",
-                img: "https://picsum.photos/seed/james/100/100"
+                quote: “Running a gaming studio like Shakuri means every hour matters. Happi AI has genuinely changed how we operate. Tasks that used to eat into our team's creative time are handled in minutes. We're not cutting people, we're freeing them to do the work only humans can do. It didn't just save us time, it gave us capacity we didn't know we were missing.”,
+                author: “Eve S.”,
+                role: “Creative Director”,
+                img: “https://picsum.photos/seed/eve/100/100”
+              },
+              {
+                quote: “Too much volume, not enough hours. Our agents handle first response around the clock now. Bookings get made, opportunities don't fall through the cracks at 9pm on a Friday. Our inbound conversion is up and the team are focused on warm leads instead of playing catch up.”,
+                author: “James T.”,
+                role: “Customer Experience Lead”,
+                img: “https://picsum.photos/seed/jamest/100/100”
               }
             ].map((t, idx) => (
-              <motion.div 
+              <motion.div
                 key={idx}
                 {...revealProps}
-                className="p-12 border-l-4 border-happi-primary bg-happi-bg rounded-r-3xl"
+                transition={{ ...revealProps.transition, delay: idx * 0.1 }}
+                className=”p-8 border-l-4 border-happi-primary bg-happi-bg rounded-r-3xl flex flex-col”
               >
-                <div className="text-happi-primary text-6xl font-serif mb-6">“</div>
-                <h4 className="text-2xl font-bold mb-8 leading-tight">{t.quote}</h4>
-                <div className="flex items-center">
-                  <img src={t.img} alt={t.author} className="w-12 h-12 rounded-full mr-4 grayscale" referrerPolicy="no-referrer" loading="lazy" width="48" height="48" />
+                <div className=”text-happi-primary text-6xl font-serif mb-4 leading-none”>”</div>
+                <p className=”text-base font-medium mb-8 leading-relaxed flex-1”>{t.quote}</p>
+                <div className=”flex items-center”>
+                  <img src={t.img} alt={t.author} className=”w-12 h-12 rounded-full mr-4 grayscale” referrerPolicy=”no-referrer” loading=”lazy” width=”48” height=”48” />
                   <div>
-                    <div className="font-bold">{t.author}</div>
-                    <div className="text-sm text-happi-muted">{t.role}</div>
+                    <div className=”font-bold”>{t.author}</div>
+                    <div className=”text-sm text-happi-muted”>{t.role}</div>
                   </div>
                 </div>
               </motion.div>
@@ -570,13 +574,13 @@ export default function App() {
           <motion.div {...revealProps}>
             <h2 className="text-6xl font-bold mb-8">Questions? We've got answers.</h2>
             <p className="text-happi-muted mb-10">
-              Can't find what you're looking for? <span className="font-bold text-happi-accent">Book a free call</span>
+              Can't find what you're looking for? <span className="font-bold text-happi-accent">Build My Plan</span>
             </p>
             <button
-              onClick={() => { trackSchedule(); setIsContactModalOpen(true); }}
+              onClick={() => { trackSchedule(); window.open(BOOKING_URL, '_blank'); }}
               className="bg-happi-accent text-white px-10 py-4 rounded-full font-bold hover:shadow-[0_0_25px_rgba(16,185,129,0.4)] transition-all"
             >
-              Book a free call
+              Build My Plan
             </button>
           </motion.div>
 
@@ -605,12 +609,12 @@ export default function App() {
       <section className="py-32 px-6">
         <div className="max-w-7xl mx-auto bg-happi-primary rounded-[3rem] p-12 md:p-24 text-center relative overflow-hidden">
           <motion.div {...revealProps} className="relative z-10">
-            <h2 className="text-5xl md:text-7xl font-bold text-happi-accent mb-8">Ready to be happier?</h2>
+            <h2 className="text-5xl md:text-7xl font-bold text-happi-accent mb-8">Don't worry, be happy</h2>
             <p className="text-xl text-happi-accent/70 mb-12 max-w-2xl mx-auto">
-              Book a free 30-minute discovery call. No pitch, no pressure. Just honest advice on where AI can make the biggest difference in your business.
+              Schedule a 30-minute call, we'll walk through your business and show you where AI can automate, optimise, and create more revenue. No pitching, just useful ideas.
             </p>
-            <button 
-              onClick={() => setIsContactModalOpen(true)}
+            <button
+              onClick={() => window.open(BOOKING_URL, '_blank')}
               className="bg-happi-accent text-white px-12 py-5 rounded-full font-bold text-lg hover:scale-105 hover:shadow-[0_0_40px_rgba(16,185,129,0.5)] transition-all"
             >
               Book your free call
@@ -631,9 +635,7 @@ export default function App() {
                 Build the future
               </p>
               <div className="flex space-x-4">
-                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="w-8 h-8 rounded-full border border-happi-accent flex items-center justify-center hover:bg-happi-accent hover:text-white transition-colors">f</a>
-                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter / X" className="w-8 h-8 rounded-full border border-happi-accent flex items-center justify-center hover:bg-happi-accent hover:text-white transition-colors">t</a>
-                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-8 h-8 rounded-full border border-happi-accent flex items-center justify-center hover:bg-happi-accent hover:text-white transition-colors">i</a>
+                <a href="https://www.facebook.com/profile.php?id=61573483374888" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="w-8 h-8 rounded-full border border-happi-accent flex items-center justify-center hover:bg-happi-accent hover:text-white transition-colors">f</a>
               </div>
             </div>
 
