@@ -274,7 +274,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                     transition: 'background 0.2s ease',
                   }}
                 >
-                  {status === 'submitting' ? 'Sending…' : 'Send Message \u2192'}
+                  {status === 'submitting' ? 'Sending…' : 'Send Message →'}
                 </button>
               </form>
             )}
@@ -315,7 +315,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
               onMouseEnter={e => (e.currentTarget).style.background = C.ctaHover}
               onMouseLeave={e => (e.currentTarget).style.background = C.cta}
             >
-              Pick a Time \u2192
+              Pick a Time →
             </a>
           </div>
         )}
