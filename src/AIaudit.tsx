@@ -224,7 +224,7 @@ export default function AIAudit() {
             <div style={{ background: `${C.accent}18`, display: "inline-block", padding: "6px 16px", borderRadius: 50, fontSize: 12, fontWeight: 700, color: C.accentDark, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 20, marginLeft: "50%", transform: "translateX(-50%)" }}>AI THAT ACTUALLY WORKS</div>
             <h1 style={{ color: C.text, fontSize: 38, fontWeight: 800, lineHeight: 1.1, textAlign: "center", marginBottom: 14, letterSpacing: "-0.03em" }}>AI Readiness<br />Audit.</h1>
             <p style={{ color: C.muted, fontSize: 16, textAlign: "center", marginBottom: 36, lineHeight: 1.6 }}>Find out how AI-ready you really are.<br />Takes 2-3 minutes. Brutally honest.</p>
-            <button style={cta} onClick={() => transition(() => setStage("select_type"))} onMouseOver={e => (e.target as HTMLButtonElement).style.background = "#1a3020"} onMouseOut={e => (e.target as HTMLButtonElement).style.background = C.cta}>Start my audit →</button>
+            <button style={cta} onClick={() => transition(() => setStage("select_type"))} onMouseOver={e => (e.target as HTMLButtonElement).style.background = "#1a3020"} onMouseOut={e => (e.target as HTMLButtonElement).style.background = C.cta}>Take the free test →</button>
           </div>
         )}
 
