@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight, Menu, X, Plus, Minus, Send, Phone, Mail, User, Calendar } from 'lucide-react';
 import { useForm, ValidationError } from '@formspree/react';
 import StatsBanner from './StatsBanner';
+import AuditBanner from './AuditBanner';
 import { trackSchedule } from './utils/tracking';
 const BOOKING_URL = 'https://calendar.app.google/sNTqcw8YxxQzuHxw6';
 
@@ -404,6 +405,8 @@ export default function App() {
           </motion.div>
         </div>
       </section>
+
+      <AuditBanner />
 
       {/* Stats + Word Rotator Banner */}
       <StatsBanner />
