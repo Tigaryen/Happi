@@ -395,7 +395,7 @@ export default function App() {
           <motion.div {...revealProps}>
             <h2 className="text-6xl font-bold mb-8">Questions? We've got answers.</h2>
             <p className="text-happi-muted mb-10">
-              Can't find what you're looking for? <span className="font-bold text-happi-accent">Build My Plan</span>
+              Learn how AI can improve your business
             </p>
             <button
               onClick={() => setIsContactModalOpen(true)}
