@@ -65,7 +65,13 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
       const res = await fetch('https://formspree.io/f/mvzvrkey', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          _subject: `New Contact: ${form.name}`,
+          name: form.name,
+          email: form.email,
+          phone: form.phone.trim() || 'Not provided',
+          message: form.message,
+        }),
       });
       setStatus(res.ok ? 'success' : 'error');
     } catch {
